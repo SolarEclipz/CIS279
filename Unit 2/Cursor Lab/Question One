@@ -1,0 +1,24 @@
+-- Murach's SQL Sever 2016 for developers
+-- SQL Using Murch's My Guitar Shop
+
+DECLARE @ProductNameVar VARCHAR(50), @ListPriceVar NUMERIC(10,2);
+
+DECLARE Products_Cursor CURSOR FOR 
+	SELECT ProductName, ListPrice 
+	FROM PRODUCTS 
+	WHERE ListPrice > 700
+	ORDER BY ListPrice DESC;
+OPEN PRODUCTS_CUR;
+
+IF @@CURSOR_ROWS > 0
+	BEGIN 
+	FETCH NEXT FROM Products_Cursor INTO @ProductNameVar, @ListPriceVar
+	WHILE @@Fetch_status = 0
+		 BEGIN
+			PRINT @ProductNameVar +', $'+CONVERT(VARCHAR,@ListPriceVar)
+			FETCH NEXT FROM Products_Cursor INTO @ProductNameVar, @ListPriceVar
+		END
+	END
+
+CLOSE Products_Cursor;
+DEALLOCATE Products_Cursor;
