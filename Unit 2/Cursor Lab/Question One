@@ -1,24 +1,25 @@
 -- Murach's SQL Sever 2016 for developers
 -- SQL Using Murch's My Guitar Shop
 
-DECLARE @ProductNameVar VARCHAR(50), @ListPriceVar NUMERIC(10,2);
+DECLARE @ProductName VARCHAR(50), @ListPrice NUMERIC(10,2)
 
-DECLARE Products_Cursor CURSOR FOR 
+DECLARE PRODUCTS_CUR CURSOR 
+FOR 
 	SELECT ProductName, ListPrice 
 	FROM PRODUCTS 
 	WHERE ListPrice > 700
 	ORDER BY ListPrice DESC;
-OPEN PRODUCTS_CUR;
+OPEN PRODUCTS_CUR
 
 IF @@CURSOR_ROWS > 0
 	BEGIN 
-	FETCH NEXT FROM Products_Cursor INTO @ProductNameVar, @ListPriceVar
+	FETCH NEXT FROM PRODUCTS_CUR INTO @ProductName, @ListPrice
 	WHILE @@Fetch_status = 0
 		 BEGIN
-			PRINT @ProductNameVar +', $'+CONVERT(VARCHAR,@ListPriceVar)
-			FETCH NEXT FROM Products_Cursor INTO @ProductNameVar, @ListPriceVar
+			PRINT @ProductName +', $'+CONVERT(VARCHAR,@ListPrice)
+			FETCH NEXT FROM PRODUCTS_CUR INTO @ProductName, @ListPrice
 		END
 	END
 
-CLOSE Products_Cursor;
-DEALLOCATE Products_Cursor;
+CLOSE PRODUCTS_CUR
+DEALLOCATE PRODUCTS_CUR
